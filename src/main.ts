@@ -1,5 +1,5 @@
-import "./styles/variables.scss";
-import "./styles/reset.scss";
+import "./styles/_variables.scss";
+import "./styles/_reset.scss";
 
 import App from "./app";
 
