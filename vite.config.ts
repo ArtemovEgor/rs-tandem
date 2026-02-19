@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import path from "node:path";
 
 export default defineConfig({
-  base: "/rs-tandem/",
+  base: "/codeVibeCheck/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "./src"),
