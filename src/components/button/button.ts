@@ -1,0 +1,34 @@
+import type { IBaseComponentConfig } from "@/types/types";
+import BaseComponent from "../base/base-component";
+import "./button.scss";
+
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+
+interface IButtonConfig extends Omit<IBaseComponentConfig, "tag"> {
+  onClick?: (event: MouseEvent) => void;
+  variant?: ButtonVariant;
+}
+
+export class Button extends BaseComponent<HTMLButtonElement> {
+  constructor({
+    text,
+    onClick,
+    variant = "primary",
+    className = "",
+    ...rest
+  }: IButtonConfig) {
+    super({
+      ...rest,
+      tag: "button",
+      className: `btn btn-${variant} ${className}`.trim(),
+      text,
+    });
+
+    if (onClick) this.on("click", (event) => onClick(event as MouseEvent));
+  }
+
+  public setDisabled(disabled: boolean): this {
+    this.node.disabled = disabled;
+    return this;
+  }
+}
