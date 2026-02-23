@@ -1,4 +1,4 @@
-import BaseComponent from "@/components/base-component";
+import BaseComponent from "@/components/base/base-component";
 import { ROUTES } from "@/constants/routes";
 import type Page from "@/pages/page";
 
@@ -14,7 +14,7 @@ type Route = RouteOptions & {
   component: RouteCallback;
 };
 
-class Router {
+export default class Router {
   private routes = new Map<string, Route>();
   private rootContainer: HTMLElement | undefined = undefined;
   private currentPage: Page | undefined = undefined;
