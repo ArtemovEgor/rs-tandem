@@ -7,12 +7,12 @@
 
   &--scrolled {
     border-bottom-color: var(--border);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
   }
 
   &__container {
     @include flex-between;
-    padding: 5px;
+    padding: var(--space-1);
   }
 
   &__right {
@@ -33,7 +33,7 @@
     flex-shrink: 0;
 
     &:hover {
-      opacity: 0.85;
+      opacity: var(--hover-opacity);
     }
 
     &__icon {
@@ -48,7 +48,7 @@
       font-weight: var(--weight-bold);
       color: var(--text-primary);
 
-      @media (max-width: 600px) {
+      @include mobile {
         display: none;
       }
     }

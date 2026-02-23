@@ -2,6 +2,8 @@ import { EN } from "@/locale/en";
 import BaseComponent from "../../base/base-component";
 import Link from "../../link/link";
 import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
+import { DEFAULT_THEME, THEME_STORAGE_KEY } from "@/constants/app";
+import { SCROLL_THRESHOLD } from "./header.constants";
 import "./header.scss";
 
 export class Header extends BaseComponent {
@@ -13,7 +15,7 @@ export class Header extends BaseComponent {
   }
 
   private restoreTheme(): void {
-    const saved = localStorage.getItem("app-theme") ?? "dark";
+    const saved = localStorage.getItem(THEME_STORAGE_KEY) ?? DEFAULT_THEME;
     document.documentElement.dataset.theme = saved;
   }
 
@@ -32,14 +34,14 @@ export class Header extends BaseComponent {
     new BaseComponent({
       tag: "span",
       className: "logo__icon",
-      text: "</>",
+      text: EN.common.app.logo,
       parent: logoLink,
     });
 
     new BaseComponent({
       tag: "span",
       className: "logo__text",
-      text: "codeVibeCheck",
+      text: EN.common.app.name,
       parent: logoLink,
     });
 
@@ -77,7 +79,7 @@ export class Header extends BaseComponent {
   }
 
   private scrollHandler = (): void => {
-    this.toggleClass("header--scrolled", window.scrollY > 20);
+    this.toggleClass("header--scrolled", window.scrollY > SCROLL_THRESHOLD);
   };
 
   private initScrollHandler(): void {

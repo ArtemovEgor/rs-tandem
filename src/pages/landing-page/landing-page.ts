@@ -6,8 +6,6 @@ import { EN } from "@/locale/en";
 import { ICONS } from "@/assets/icons";
 
 export class LandingPage extends BaseComponent {
-  private header!: BaseComponent;
-
   constructor() {
     super({ tag: "div", className: "landing" });
     this.init();
@@ -15,18 +13,11 @@ export class LandingPage extends BaseComponent {
 
   private init(): void {
     this.addChildren([
-      this.createHeader(),
+      new Header(),
       this.createHero(),
       this.createFeatures(),
       this.createCTA(),
     ]);
-  }
-
-  // HEADER
-
-  private createHeader() {
-    this.header = new Header();
-    return this.header;
   }
 
   // SECTION: Hero
@@ -46,13 +37,13 @@ export class LandingPage extends BaseComponent {
 
     new BaseComponent({
       className: "hero__code hero__code--left",
-      text: "const sum = (a, b) => a + b;",
+      text: EN.landing.hero.examples.first,
       parent: parent,
     });
 
     new BaseComponent({
       className: "hero__code hero__code--right",
-      text: "type User = { id: string }",
+      text: EN.landing.hero.examples.second,
       parent: parent,
     });
 

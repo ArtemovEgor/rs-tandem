@@ -4,6 +4,10 @@ export const EN = {
       login: "Login",
       signup: "Sign up",
     },
+    app: {
+      name: "codeVibeCheck",
+      logo: "</>",
+    },
   },
   landing: {
     hero: {
@@ -16,6 +20,10 @@ export const EN = {
       },
       subtitle:
         "Interactive widgets and AI-powered feedback to boost your technical skills.",
+      examples: {
+        first: "const sum = (a, b) => a + b;",
+        second: "type User = { id: string }",
+      },
     },
     features: {
       title: "Everything you need to succeed",

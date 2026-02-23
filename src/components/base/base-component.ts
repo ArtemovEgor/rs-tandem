@@ -1,7 +1,7 @@
 import type { IBaseComponentConfig } from "@/types/types";
 
 export default class BaseComponent<T extends HTMLElement = HTMLElement> {
-  public readonly node: T;
+  private readonly node: T;
   private listeners: (() => void)[] = [];
   private children: BaseComponent<HTMLElement>[] = [];
 
