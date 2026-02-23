@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/header/header";
 import { EN } from "@/locale/en";
 import { ICONS } from "@/assets/icons";
 import type Page from "../page";
+import { ROUTES } from "@/constants/routes";
 
 export class LandingPage extends BaseComponent implements Page {
   constructor() {
@@ -188,7 +189,7 @@ export class LandingPage extends BaseComponent implements Page {
       text: EN.landing.cta.button,
       variant: "primary",
       className: "action__btn",
-      href: "#register",
+      href: `#${ROUTES.REGISTER}`,
       parent,
     });
   }
