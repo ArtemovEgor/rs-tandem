@@ -1,12 +1,14 @@
 import BaseComponent from "@/components/base/base-component";
+import Modal from "@/components/modal/modal";
 import { ROUTES } from "@/constants/routes";
 import type Page from "@/pages/page";
 
-type RouteCallback = (parameters: Record<string, string>) => Page;
+type RouteCallback = (parameters: Record<string, string>) => Page | Modal;
 
 interface RouteOptions {
   isProtected?: boolean;
   isGuestOnly?: boolean;
+  isModal?: boolean;
 }
 
 type Route = RouteOptions & {
@@ -18,6 +20,7 @@ export default class Router {
   private routes = new Map<string, Route>();
   private rootContainer: HTMLElement | undefined = undefined;
   private currentPage: Page | undefined = undefined;
+  private currentModal: Modal | undefined = undefined;
   private authCheck: () => boolean = () => false;
 
   constructor() {
@@ -118,15 +121,26 @@ export default class Router {
   private render(route: Route, parameters: Record<string, string>): void {
     if (!this.rootContainer) return;
 
-    if (this.currentPage) {
-      this.currentPage.destroy();
+    const component = route.component(parameters);
+
+    if (route.isModal && component instanceof Modal) {
+      this.closeCurrentModal();
+      this.currentModal = component;
+      component.addTo(this.rootContainer);
+      component.showModal();
+    } else if (component instanceof BaseComponent) {
+      this.closeCurrentModal();
+      this.currentPage?.destroy();
+      this.currentPage = component as unknown as Page;
+      this.rootContainer.replaceChildren(component.getNode());
     }
+  }
 
-    const page = route.component(parameters);
-    this.currentPage = page;
-
-    if (page instanceof BaseComponent) {
-      this.rootContainer.replaceChildren(page.getNode());
+  private closeCurrentModal(): void {
+    if (this.currentModal) {
+      this.currentModal.close();
+      this.currentModal.destroy();
+      this.currentModal = undefined;
     }
   }
 }
