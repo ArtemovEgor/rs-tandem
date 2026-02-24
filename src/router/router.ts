@@ -55,6 +55,8 @@ export default class Router {
       this.navigate(ROUTES.LANDING);
       return;
     }
+
+    // Hash format: "#/path" → extracted as "/path"
     const currentPath = globalThis.location.hash.slice(1) || "/";
     const parameters: Record<string, string> = {};
 
@@ -90,6 +92,7 @@ export default class Router {
 
     for (const [routePath, route] of this.routes.entries()) {
       if (routePath.includes(":")) {
+        // Convert "/practice/:topicId" → /^\/practice\/([^/]+)$/
         const routeMatcher = new RegExp(
           `^${routePath.replaceAll(/:[^\s/]+/g, "([^/]+)")}$`,
         );
