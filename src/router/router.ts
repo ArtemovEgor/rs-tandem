@@ -21,6 +21,7 @@ export default class Router {
   private rootContainer: HTMLElement | undefined = undefined;
   private currentPage: Page | undefined = undefined;
   private currentModal: Modal | undefined = undefined;
+  private previousPagePath: string | undefined = undefined;
   private authCheck: () => boolean = () => false;
 
   constructor() {
@@ -128,20 +129,36 @@ export default class Router {
       this.currentModal = component;
       component.addTo(this.rootContainer);
       component.showModal();
+
+      component.getNode().addEventListener(
+        "close",
+        () => {
+          this.currentModal?.destroy();
+          this.currentModal = undefined;
+          this.navigateBack();
+        },
+        { once: true },
+      );
     } else if (component instanceof BaseComponent) {
       this.closeCurrentModal();
+      if (this.previousPagePath === route.path && this.currentPage) return;
       this.currentPage?.destroy();
       this.currentPage = component as unknown as Page;
+      this.previousPagePath = route.path;
       this.rootContainer.replaceChildren(component.getNode());
     }
   }
 
   private closeCurrentModal(): void {
     if (this.currentModal) {
-      this.currentModal.close();
       this.currentModal.destroy();
       this.currentModal = undefined;
     }
+  }
+
+  private navigateBack(): void {
+    const path = this.previousPagePath ?? ROUTES.LANDING;
+    history.replaceState(undefined, "", `#${path}`);
   }
 }
 
