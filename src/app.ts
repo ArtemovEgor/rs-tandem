@@ -1,3 +1,4 @@
+import AuthModal from "./components/auth-modal/auth-modal";
 import { ROUTES } from "./constants/routes";
 import { LandingPage } from "./pages/landing-page/landing-page";
 import { router } from "./router/router";
@@ -14,6 +15,11 @@ export default class App {
     router.setRootContainer(this.parentNode);
     router.register(ROUTES.LANDING, () => new LandingPage(), {
       isGuestOnly: true,
+    });
+
+    router.register(ROUTES.LOGIN, () => new AuthModal(), {
+      isGuestOnly: true,
+      isModal: true,
     });
   }
 }

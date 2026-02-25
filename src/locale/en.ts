@@ -1,8 +1,23 @@
 export const EN = {
   common: {
     auth: {
-      login: "Login",
+      login_link: "Login",
+      login_header: "Log in to your account",
+      email: "Email",
+      email_placeholder: "Enter your email",
+      password: "Password",
+      password_placeholder: "Enter your password",
+      login_button: "Login",
       signup: "Sign up",
+    },
+    validation: {
+      empty: "This field is required",
+      default_error: "Invalid input",
+      email_error: "Please enter a valid email address",
+      password_error: "Password does not meet the requirements",
+      too_short: "Minimum length is",
+      too_long: "Maximum length is",
+      characters: "characters",
     },
     app: {
       name: "codeVibeCheck",

@@ -66,7 +66,7 @@ export class Header extends BaseComponent {
     });
 
     new Link({
-      text: EN.common.auth.login,
+      text: EN.common.auth.login_link,
       href: `#${ROUTES.LOGIN}`,
       variant: "ghost",
       parent: actions,

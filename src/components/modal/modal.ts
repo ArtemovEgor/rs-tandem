@@ -1,10 +1,19 @@
 import BaseComponent from "../base/base-component";
+import "./modal.scss";
 
 export default class Modal extends BaseComponent<HTMLDialogElement> {
+  protected content: BaseComponent;
+
   constructor(className = "modal") {
     super({
       tag: "dialog",
       className,
+    });
+
+    this.content = new BaseComponent({
+      tag: "div",
+      className: "modal__content",
+      parent: this,
     });
 
     this.on("click", (event) => {
