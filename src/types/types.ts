@@ -21,3 +21,14 @@ export interface ILinkConfig extends IClickableConfig {
   href: string;
   isExternal?: boolean;
 }
+
+export interface IFieldConfig {
+  id: string;
+  type: string;
+  label: string;
+  placeholder: string;
+  pattern: string;
+  errorMessage: string;
+  minLength: number;
+  maxLength: number;
+}

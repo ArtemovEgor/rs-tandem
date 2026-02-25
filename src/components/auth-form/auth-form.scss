@@ -1,8 +1,9 @@
-.auth-form {
+.auth-form,
+.register-form {
   @include flex-column;
 }
 
-.auth-field {
+.form-field {
   @include flex-column;
   gap: var(--space-2);
 
@@ -21,6 +22,7 @@
 
   &__error {
     font-size: var(--text-xs);
+    line-height: 1.2;
     color: var(--accent-error);
     min-height: 1.2em;
     transition: opacity var(--transition-fast);
@@ -46,7 +48,7 @@
   }
 }
 
-.button--login {
+.button--submit {
   @include btn-primary;
   width: 100%;
   padding: var(--space-3) var(--space-6);
@@ -82,7 +84,8 @@
     }
   }
 
-  .auth-form {
+  .auth-form,
+  .register-form {
     padding: 0 var(--space-6) var(--space-6);
   }
 }

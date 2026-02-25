@@ -72,7 +72,7 @@ export class Header extends BaseComponent {
       parent: actions,
     });
     new Link({
-      text: EN.common.auth.signup,
+      text: EN.common.auth.signup_link,
       href: `#${ROUTES.REGISTER}`,
       variant: "primary",
       parent: actions,

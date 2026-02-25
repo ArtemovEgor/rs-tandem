@@ -17,7 +17,12 @@ export default class App {
       isGuestOnly: true,
     });
 
-    router.register(ROUTES.LOGIN, () => new AuthModal(), {
+    router.register(ROUTES.LOGIN, () => new AuthModal("login"), {
+      isGuestOnly: true,
+      isModal: true,
+    });
+
+    router.register(ROUTES.REGISTER, () => new AuthModal("register"), {
       isGuestOnly: true,
       isModal: true,
     });
