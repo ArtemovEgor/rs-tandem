@@ -80,21 +80,12 @@ export class Sidebar extends BaseComponent {
     for (const item of NAV_ITEMS) {
       const link = this.renderNavLink(item);
       nav.addChildren([link]);
-
       const node = link.getNode() as HTMLAnchorElement;
       this.navLinks.push(node);
-
-      link.on("click", () => {
-        for (const item of this.navLinks) {
-          item.classList.remove("nav-link--active");
-        }
-        node.classList.add("nav-link--active");
-      });
-
-      if (globalThis.location.hash === `#${item.href}`) {
-        node.classList.add("nav-link--active");
-      }
     }
+
+    this.updateActive();
+    globalThis.addEventListener("hashchange", this.updateActive);
   }
 
   private renderNavLink(item: (typeof NAV_ITEMS)[number]): BaseComponent {
@@ -133,11 +124,7 @@ export class Sidebar extends BaseComponent {
       parent: sidebarFooterWrap,
     });
 
-    new BaseComponent({
-      tag: "div",
-      className: "sidebar__avatar",
-      parent: userWrap,
-    });
+    this.renderAvatar(userWrap);
 
     new BaseComponent({
       tag: "span",
@@ -156,8 +143,45 @@ export class Sidebar extends BaseComponent {
       className: "btn sidebar__logout",
       text: EN.sidebar.nav.logout,
       parent: sidebarFooterWrap,
-    }).on("click", () => {
-      console.log("logout");
     });
+  }
+
+  private renderAvatar(parent: BaseComponent): void {
+    // TODO: authService.getUser()
+    const userName = "Alex";
+    const avatarUrl = "";
+
+    const avatar = new BaseComponent({
+      tag: "div",
+      className: "sidebar__avatar",
+      parent,
+    });
+
+    if (avatarUrl) {
+      const img = new BaseComponent<HTMLImageElement>({
+        tag: "img",
+        className: "sidebar__avatar-img",
+        parent: avatar,
+      });
+      img.getNode().src = avatarUrl;
+      img.getNode().alt = userName;
+    } else {
+      avatar.setText(userName.charAt(0).toUpperCase());
+    }
+  }
+
+  private updateActive = (): void => {
+    const currentPath = globalThis.location.hash.slice(1) || "/";
+    for (let index = 0; index < this.navLinks.length; index++) {
+      this.navLinks[index].classList.toggle(
+        "nav-link--active",
+        currentPath === NAV_ITEMS[index].href,
+      );
+    }
+  };
+
+  public destroy(): void {
+    globalThis.removeEventListener("hashchange", this.updateActive);
+    super.destroy();
   }
 }

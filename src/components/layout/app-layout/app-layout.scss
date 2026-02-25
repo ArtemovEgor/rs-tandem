@@ -40,7 +40,10 @@
     }
 
     .logo__icon {
+      font-family: var(--font-mono);
+      font-weight: var(--weight-bold);
       font-size: var(--text-xl);
+      color: var(--accent-primary);
     }
   }
 
