@@ -30,6 +30,8 @@ const NAV_ITEMS = [
 ] as const;
 
 export class Sidebar extends BaseComponent {
+  private navLinks: HTMLAnchorElement[] = [];
+
   constructor() {
     super({ tag: "aside", className: "app-layout__sidebar" });
     this.render();
@@ -76,30 +78,48 @@ export class Sidebar extends BaseComponent {
     });
 
     for (const item of NAV_ITEMS) {
-      const link = new Link({
-        href: `#${item.href}`,
-        className: "nav-link",
-        parent: nav,
+      const link = this.renderNavLink(item);
+      nav.addChildren([link]);
+
+      const node = link.getNode() as HTMLAnchorElement;
+      this.navLinks.push(node);
+
+      link.on("click", () => {
+        for (const item of this.navLinks) {
+          item.classList.remove("nav-link--active");
+        }
+        node.classList.add("nav-link--active");
       });
 
-      const iconSvg = new BaseComponent({
-        tag: "span",
-        className: `nav-link__icon ${item.className}`,
-        parent: link,
-      });
-      const iconKey = item.href.startsWith("/")
-        ? item.href.slice(1)
-        : item.href;
-      iconSvg.getNode().innerHTML =
-        SIDEBAR_ICONS[iconKey as keyof typeof SIDEBAR_ICONS] || "";
-
-      new BaseComponent({
-        tag: "span",
-        className: "nav-link__text",
-        text: item.text,
-        parent: link,
-      });
+      if (globalThis.location.hash === `#${item.href}`) {
+        node.classList.add("nav-link--active");
+      }
     }
+  }
+
+  private renderNavLink(item: (typeof NAV_ITEMS)[number]): BaseComponent {
+    const link = new Link({
+      href: `#${item.href}`,
+      className: "nav-link",
+    });
+
+    const iconSvg = new BaseComponent({
+      tag: "span",
+      className: `nav-link__icon ${item.className}`,
+      parent: link,
+    });
+    const iconKey = item.href.startsWith("/") ? item.href.slice(1) : item.href;
+    iconSvg.getNode().innerHTML =
+      SIDEBAR_ICONS[iconKey as keyof typeof SIDEBAR_ICONS] || "";
+
+    new BaseComponent({
+      tag: "span",
+      className: "nav-link__text",
+      text: item.text,
+      parent: link,
+    });
+
+    return link;
   }
 
   private renderSidebarFooter(): void {

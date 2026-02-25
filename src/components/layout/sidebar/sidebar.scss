@@ -10,7 +10,17 @@
   overflow: hidden;
 
   @include tablet-down {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: calc(var(--z-header) + 1);
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+
+    &.sidebar--open {
+      transform: translateX(0);
+    }
   }
 }
 
@@ -19,6 +29,10 @@
 .sidebar__logo {
   padding: var(--space-5) var(--space-4);
   border-bottom: 1px solid var(--border);
+
+  @include tablet-down {
+    visibility: hidden;
+  }
 
   .logo {
     @include flex-center;
