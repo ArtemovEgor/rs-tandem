@@ -6,6 +6,11 @@ import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
 import "./sidebar.scss";
 import { SIDEBAR_ICONS } from "@/assets/icons";
 
+interface IUserView {
+  displayName: string;
+  avatarUrl: string;
+}
+
 const NAV_ITEMS = [
   {
     text: EN.sidebar.nav.dashboard,
@@ -30,7 +35,7 @@ const NAV_ITEMS = [
 ] as const;
 
 export class Sidebar extends BaseComponent {
-  private navLinks: HTMLAnchorElement[] = [];
+  private navLinks: BaseComponent[] = [];
 
   constructor() {
     super({ tag: "aside", className: "app-layout__sidebar" });
@@ -38,9 +43,18 @@ export class Sidebar extends BaseComponent {
   }
 
   private render(): void {
+    const user = this.getUser();
     this.renderSidebarLogo();
     this.renderSidebarNav();
-    this.renderSidebarFooter();
+    this.renderSidebarFooter(user);
+  }
+
+  // TODO: authService.getUser()
+  private getUser(): IUserView {
+    return {
+      displayName: "Alex",
+      avatarUrl: "",
+    };
   }
 
   private renderSidebarLogo(): void {
@@ -80,8 +94,7 @@ export class Sidebar extends BaseComponent {
     for (const item of NAV_ITEMS) {
       const link = this.renderNavLink(item);
       nav.addChildren([link]);
-      const node = link.getNode() as HTMLAnchorElement;
-      this.navLinks.push(node);
+      this.navLinks.push(link);
     }
 
     this.updateActive();
@@ -113,7 +126,7 @@ export class Sidebar extends BaseComponent {
     return link;
   }
 
-  private renderSidebarFooter(): void {
+  private renderSidebarFooter(user: IUserView): void {
     const sidebarFooterWrap = new BaseComponent({
       className: "sidebar__footer",
       parent: this,
@@ -124,12 +137,12 @@ export class Sidebar extends BaseComponent {
       parent: sidebarFooterWrap,
     });
 
-    this.renderAvatar(userWrap);
+    this.renderAvatar(userWrap, user);
 
     new BaseComponent({
       tag: "span",
       className: "sidebar__username",
-      text: "Alex",
+      text: user.displayName,
       parent: userWrap,
     });
 
@@ -146,10 +159,9 @@ export class Sidebar extends BaseComponent {
     });
   }
 
-  private renderAvatar(parent: BaseComponent): void {
-    // TODO: authService.getUser()
-    const userName = "Alex";
-    const avatarUrl = "";
+  private renderAvatar(parent: BaseComponent, user: IUserView): void {
+    const userName = user.displayName;
+    const avatarUrl = user.avatarUrl;
 
     const avatar = new BaseComponent({
       tag: "div",
@@ -171,15 +183,16 @@ export class Sidebar extends BaseComponent {
   }
 
   public onNavLinkClick(callback: () => void): void {
-    for (const node of this.navLinks) {
-      node.addEventListener("click", callback);
+    for (const link of this.navLinks) {
+      link.on("click", callback);
     }
   }
 
   private updateActive = (): void => {
     const currentPath = globalThis.location.hash.slice(1) || "/";
     for (let index = 0; index < this.navLinks.length; index++) {
-      this.navLinks[index].classList.toggle(
+      const linkNode = this.navLinks[index].getNode();
+      linkNode.classList.toggle(
         "nav-link--active",
         currentPath === NAV_ITEMS[index].href,
       );
